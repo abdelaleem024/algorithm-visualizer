@@ -1,0 +1,93 @@
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  background: var(--primary-blue, #1d3557);
+  padding: 16px 20px;
+}
+
+.title {
+  color: var(--primary-red, #e63946);
+  font-family: "Koh Santepheap";
+  font-size: 24px;
+  font-weight: 700;
+  text-wrap: wrap;
+}
+
+.menu {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  justify-content: flex-start;
+  align-items: center;
+  color: var(--background-color, #f1faee);
+  font-family: "Koh Santepheap";
+  font-size: 16px;
+  font-weight: 700;
+  margin-left: 50px;
+  column-gap: 30px;
+}
+
+.maze {
+  color: var(--background-color, #f1faee);
+  font-family: "Koh Santepheap";
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.maze:hover {
+  opacity: 0.8;
+}
+
+.tutorialContainer {
+  color: var(--background-color, #f1faee);
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  flex: 1;
+  align-items: center;
+  column-gap: 10px;
+  margin-left: 20px;
+  font-family: "Koh Santepheap";
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.tutorialContainer:hover {
+  opacity: 0.8;
+}
+
+.tutorialWrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  column-gap: 10px;
+  cursor: pointer;
+}
+
+@media (max-width: 656px) {
+  .header {
+    flex-direction: column;
+    row-gap: 15px;
+  }
+  .menu {
+    margin-left: 0px;
+  }
+  .tutorialContainer {
+    margin-left: 0px;
+  }
+}
+
+@media (max-width: 388px) {
+  .menu {
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 1rem;
+  }
+  .tutorialContainer {
+    justify-content: center;
+  }
+}

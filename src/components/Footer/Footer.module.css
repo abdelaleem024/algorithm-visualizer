@@ -1,0 +1,15 @@
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  background: var(--primary-blue, #1d3557);
+}
+
+.footer span,
+.footer a {
+  color: var(--background-color, #f1faee);
+  font-family: "Koh Santepheap";
+  font-size: 16px;
+  font-weight: 700;
+}

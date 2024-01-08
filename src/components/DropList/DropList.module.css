@@ -1,0 +1,48 @@
+.dropList {
+  display: flex;
+  position: relative;
+}
+
+.titleContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  color: var(--background-color, #f1faee);
+  font-family: "Koh Santepheap";
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.titleContainer:hover {
+  opacity: 0.8;
+}
+
+.listContainer {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 160px;
+  background: var(--background-color, #f1faee);
+  border: 1px solid var(--primary-blue, #1d3557);
+  border-radius: 4px;
+  z-index: 1;
+  padding: 8px 8px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
+}
+
+.listItem {
+  display: flex;
+  cursor: pointer;
+  color: var(--primary-blue, #1d3557);
+  font-family: "Koh Santepheap";
+  padding: 8px 8px;
+}
+
+.listItem:hover {
+  color: var(--background-color, #f1faee);
+  background: var(--primary-blue, #1d3557);
+}

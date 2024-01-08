@@ -1,0 +1,110 @@
+.settingsBar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+}
+
+.IconsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: start;
+  align-items: center;
+  border-radius: 0.5rem;
+  column-gap: 20px;
+}
+
+.wallCell {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  border: 1px solid var(--primary-blue, #1d3557);
+  background: #000;
+}
+
+.emptyCell {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  border: 1px solid var(--primary-blue, #1d3557);
+}
+
+.sperator {
+  width: 2px;
+  height: 30px;
+  flex-shrink: 0;
+  background: var(--light-blue, #a8dadc);
+}
+
+.controlsContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: end;
+  flex: 1;
+  column-gap: 1rem;
+  row-gap: 1rem;
+}
+
+.sliderContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  row-gap: 0.5rem;
+}
+
+.label {
+  color: #000;
+  font-family: "Koh Santepheap";
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.slider {
+  width: 100%;
+  background: var(--primary-blue, #1d3557);
+  cursor: pointer;
+}
+
+.buttonsContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  column-gap: 1rem;
+}
+
+.startPauseSkipButtons {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+  flex-wrap: wrap;
+  row-gap: 8px;
+}
+
+@media (max-width: 1170px) {
+  .settingsBar {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 1rem;
+  }
+
+  .controlsContainer {
+    justify-content: center;
+  }
+  .IconsContainer {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 711px) {
+  .IconsContainer {
+    max-width: 416px;
+  }
+}

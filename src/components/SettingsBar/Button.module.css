@@ -1,0 +1,28 @@
+.button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  column-gap: 8px;
+  flex-wrap: nowrap;
+  cursor: pointer;
+}
+
+.button:hover {
+  opacity: 0.8;
+}
+
+.buttonContent {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.label {
+  cursor: pointer;
+  color: #000;
+  font-family: "Koh Santepheap";
+  font-size: 16px;
+  font-weight: 700;
+}
