@@ -1,18 +1,19 @@
-import styles from "./Button.module.css";
+import classes from "./Button.module.css";
+import log from "./../../utils/log";
 
-export default function Button({ label, onClick, children, style }) {
+function Button({ label, onClick, children, style }) {
+  log(`<Button/ > ${label} rendering`);
   return (
     <div
-      className={styles.button}
+      className={`${classes.button}`}
       onClick={onClick}
       id={label}
       name={label}
       style={style}
     >
-      <div className={styles.buttonContent}>{children}</div>
-      <label htmlFor={label} className={styles.label}>
-        {label}
-      </label>
+      <div className={`${classes.buttonContent}`}>{children}</div>
+      <span className={`${classes.label}`}>{label}</span>
     </div>
   );
 }
+export default Button;

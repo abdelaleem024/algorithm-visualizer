@@ -1,32 +1,54 @@
-import styles from "./Header.module.css";
+import classes from "./Header.module.css";
 import DropList from "../DropList/DropList";
 import infoIcon from "../../assets/icons/info.svg";
+import { algorithms } from "../../constants/constants";
+import { useSelector, useDispatch } from "react-redux";
+import { gridActions } from "../../redux/grid";
+import { selectSelectedAlgorithm } from "../../redux/selectors";
+import log from "../../utils/log";
 
-export default function Header({
-  algorithms = [],
-  selectedAlgorithm = "",
-  handleChangeAlgorithm = () => {},
-  handleGenerateMaze = () => {},
-}) {
+function Header() {
+  log("<Header /> rendering");
+  const dispatch = useDispatch();
+
+  const selectedAlgorithm = useSelector(selectSelectedAlgorithm);
+
+  const dropListTitle = selectedAlgorithm
+    ? selectedAlgorithm
+    : "Select Algorithm";
+
+  const handleChangeAlgorithm = (algorithm) => {
+    dispatch(
+      gridActions.updateSelectedAlgorithm({
+        algorithm: algorithm,
+      })
+    );
+  };
+
+  const handleGenerateMaze = () => {
+    dispatch(gridActions.generateRandomMaze());
+  };
+
   return (
-    <div className={styles.header}>
-      <h1 className={styles.title}>Pathfinding Visualizer</h1>
-      <div className={styles.menu}>
-        <div className={styles.maze} onClick={handleGenerateMaze}>
+    <div className={`${classes.header}`}>
+      <h1 className={`${classes.title}`}>Pathfinding Visualizer</h1>
+      <div className={`${classes.menu}`}>
+        <div className={`${classes.maze}`} onClick={handleGenerateMaze}>
           <span>Generate Maze</span>
         </div>
         <DropList
-          title={selectedAlgorithm ? selectedAlgorithm : "Select Algorithm"}
+          title={dropListTitle}
           list={algorithms}
-          onSelected={handleChangeAlgorithm}
+          onSelecte={handleChangeAlgorithm}
         />
-        <div className={styles.tutorialContainer}>
-          <div className={styles.tutorialWrapper}>
-            <img src={infoIcon} className={styles.infoIcon} />
-            <span className={styles.tutorial}>Tutorial</span>
+        <div className={`${classes.tutorialContainer}`}>
+          <div className={`${classes.tutorialWrapper}`}>
+            <img src={infoIcon} className={`${classes.infoIcon}`} />
+            <span className={`${classes.tutorial}`}>Tutorial</span>
           </div>
         </div>
       </div>
     </div>
   );
 }
+export default Header;

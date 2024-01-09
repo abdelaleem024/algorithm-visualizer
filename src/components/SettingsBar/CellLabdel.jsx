@@ -1,13 +1,16 @@
-import styles from "./CellLabdel.module.css";
+import classes from "./CellLabdel.module.css";
+import log from "./../../utils/log";
 
-export default function CellLabdel({ children, label, isSelected, onClick }) {
+function CellLabdel({ children, label, isSelected, onClick }) {
+  log(`<CellLabdel/ > ${label} rendering`);
   return (
     <div
-      className={`${styles.container} ${isSelected ? styles.selected : ""}`}
+      className={`${classes.container} ${isSelected ? classes.selected : ""}`}
       onClick={onClick}
     >
       {children}
-      <p className={styles.label}>{label}</p>
+      <p className={`${classes.label}`}>{label}</p>
     </div>
   );
 }
+export default CellLabdel;

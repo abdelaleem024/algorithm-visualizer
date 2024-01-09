@@ -1,8 +1,13 @@
-import styles from "./Loader.module.css";
-export default function Loader() {
+import log from "../../utils/log";
+import classes from "./Loader.module.css";
+
+function Loader() {
+  log("<Loader/ > rendering");
   return (
-    <div>
-      <div className={`${styles.loader}`}></div>
+    <div className={`${classes.loaderContainer}`}>
+      <div className={`${classes.loader}`}></div>
     </div>
   );
 }
+
+export default Loader;

@@ -1,8 +1,11 @@
-import styles from "./Footer.module.css";
+import log from "../../utils/log";
+import classes from "./Footer.module.css";
 
-export default function Footer() {
+function Footer() {
+  log("<Footer/ > rendering");
+
   return (
-    <div className={styles.footer}>
+    <div className={`${classes.footer}`}>
       <span>
         Created By{" "}
         <a
@@ -16,3 +19,5 @@ export default function Footer() {
     </div>
   );
 }
+
+export default Footer;

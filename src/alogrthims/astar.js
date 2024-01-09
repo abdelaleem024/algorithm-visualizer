@@ -57,7 +57,6 @@ const astar = (grid, startCell, endCell) => {
     .map(() => Array(width).fill(Infinity));
 
   const openSet = new Set();
-  const closedSet = new Set();
 
   gScore[startCell.row][startCell.col] = 0;
   fScore[startCell.row][startCell.col] = heuristic(startCell, endCell);
@@ -80,7 +79,6 @@ const astar = (grid, startCell, endCell) => {
       break;
     }
     openSet.delete(currentCell);
-    closedSet.add(currentCell);
     changesQueue.push({
       row: currentCell.row,
       col: currentCell.col,
@@ -92,7 +90,6 @@ const astar = (grid, startCell, endCell) => {
       }
     );
     for (const [newRow, newCol] of neighbors) {
-      if (closedSet.has({ row: newRow, col: newCol })) continue;
       const tentativeGScore =
         gScore[currentCell.row][currentCell.col] +
         heuristic(currentCell, { row: newRow, col: newCol });
@@ -102,14 +99,12 @@ const astar = (grid, startCell, endCell) => {
         fScore[newRow][newCol] =
           gScore[newRow][newCol] +
           heuristic({ row: newRow, col: newCol }, endCell);
-        if (!openSet.has({ row: newRow, col: newCol })) {
-          openSet.add({ row: newRow, col: newCol });
-          changesQueue.push({
-            row: newRow,
-            col: newCol,
-            color: "processing",
-          });
-        }
+        openSet.add({ row: newRow, col: newCol });
+        changesQueue.push({
+          row: newRow,
+          col: newCol,
+          color: "processing",
+        });
       }
     }
   }

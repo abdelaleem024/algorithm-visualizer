@@ -1,63 +1,67 @@
-import React from "react";
-import styles from "./Cell.module.css";
+import { memo } from "react";
+import classes from "./Cell.module.css";
 import { CELL_STYLE } from "../../constants/constants";
 import startCell from "../../assets/icons/start-cell.svg";
-import BonusCell from "../../assets/icons/bonus-cell.svg";
 import endCell from "../../assets/icons/end-cell.svg";
+import areEqual from "../../utils/compareObjects";
+import { useSelector, useDispatch } from "react-redux";
+import { selectCellSize } from "../../redux/selectors";
+import { gridActions } from "../../redux/grid";
+import log from "../../utils/log";
 
-const Cell = React.memo(function Cell({
+const Cell = memo(function Cell({
   cell,
   row,
   col,
-  handleUpdateCell,
-  cellSize = 20,
   isStartCell,
   isEndCell,
-  startStyles,
+  styles,
+  isMouseDown,
 }) {
-  const { isBonus, color } = cell;
+  log(`${row} - ${col} <Cell/ >  rendering`);
+  const dispatch = useDispatch();
+  const cellSize = useSelector(selectCellSize);
+  const { color } = cell;
+
+  const handleUpdateCell = (isClicked) => {
+    if (isMouseDown || isClicked) {
+      dispatch(gridActions.updateCell({ row, col }));
+    }
+  };
 
   return (
     <div
-      className={styles.cell}
+      className={`${classes.cell}`}
       style={{
         width: `${cellSize}px`,
         height: `${cellSize}px`,
         backgroundColor: CELL_STYLE[color],
       }}
-      onMouseOver={() => handleUpdateCell(row, col)}
-      onClick={() => handleUpdateCell(row, col, true)}
+      onMouseEnter={() => handleUpdateCell(false)}
+      onClick={() => handleUpdateCell(true)}
     >
-      {isBonus && (
-        <img
-          src={BonusCell}
-          alt="Bonus Cell"
-          className={styles.iconCell}
-          height={cellSize}
-          width={cellSize}
-        />
-      )}
       {isStartCell && (
         <img
           src={startCell}
           alt="Start Cell"
-          className={styles.iconCell}
+          className={`${classes.iconCell}`}
           height={cellSize - 10}
           width={cellSize - 10}
-          style={startStyles}
+          style={styles}
         />
       )}
       {isEndCell && (
         <img
           src={endCell}
           alt="End Cell"
-          className={styles.iconCell}
+          className={`${classes.iconCell}`}
           height={cellSize}
           width={cellSize}
         />
       )}
     </div>
   );
-});
+},
+areEqual);
 
 export default Cell;

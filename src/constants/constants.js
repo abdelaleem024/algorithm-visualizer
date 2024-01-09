@@ -1,5 +1,4 @@
 const CELL = {
-  isBonus: false,
   color: "empty",
 };
 
@@ -28,8 +27,41 @@ const visualizerStateMap = {
   finished: "finished",
 };
 
+const SPEED = {
+  MIN: 1,
+  MAX: 10,
+};
+
+import bfs from "../alogrthims/bfs";
+// import dfs from "../alogrthims/dfs";
+import astar from "../alogrthims/astar";
+import bidirectional from "../alogrthims/bidirectional";
+
+const algorithms = [
+  "Breadth First Search",
+  // "Depth First Search",
+  "A* Search",
+  "Bi-directional Search",
+];
+
+const algorithmsMap = {
+  "Breadth First Search": bfs,
+  // "Depth First Search": dfs,
+  "A* Search": astar,
+  "Bi-directional Search": bidirectional,
+};
+
+const GRID_SIZE = {
+  HEIGHT_MAX: 36,
+  WIDTH_MAX: 75,
+};
+
 export { CELL };
 export { CELL_STYLE };
 export { Mousetracker };
 export { CellSize };
 export { visualizerStateMap };
+export { algorithms };
+export { algorithmsMap };
+export { SPEED };
+export { GRID_SIZE };

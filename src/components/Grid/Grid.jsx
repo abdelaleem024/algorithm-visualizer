@@ -1,28 +1,43 @@
 import { useEffect, useState } from "react";
-import styles from "./Grid.module.css";
-import { CELL as cell } from "../../constants/constants";
+import classes from "./Grid.module.css";
 import Cell from "./Cell";
 import Loader from "../Loader/Loader";
-import { produce } from "immer";
+import { useSelector, useDispatch } from "react-redux";
+import { gridActions } from "../../redux/grid.js";
+import { visualizerStateMap } from "../../constants/constants";
+import {
+  selectCellSize,
+  selectGrid,
+  selectShowLoader,
+  selectSpeed,
+  selectUndoStack,
+  selectStartCell,
+  selectEndCell,
+  selectVisualizerState,
+  selectChangesQueue,
+} from "../../redux/selectors.js";
+import log from "../../utils/log.js";
 
-export default function Grid({
-  cellSize,
-  state,
-  showLoader,
-  setShowLoader,
-  grid,
-  handleRebuildGrid,
-  setGrid,
-  startCell,
-  setStartCell,
-  endCell,
-  setEndCell,
-  handlePushToUndoStack,
-  isRunning,
-  handleClearPath,
-}) {
+function Grid() {
+  log("<Grid /> rendering");
+
+  const dispatch = useDispatch();
+
+  const grid = useSelector(selectGrid);
+  const cellSize = useSelector(selectCellSize);
+  const speed = useSelector(selectSpeed);
+  const showLoader = useSelector(selectShowLoader);
+  const startCell = useSelector(selectStartCell);
+  const endCell = useSelector(selectEndCell);
+  const visualizerState = useSelector(selectVisualizerState);
+  const changesQueue = useSelector(selectChangesQueue);
+  const undoStack = useSelector(selectUndoStack);
+
   const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
   const [isMouseDown, setIsMouseDown] = useState(false);
+
+  const isRunning = visualizerState === visualizerStateMap.running;
+
   const startStyles = {
     // Rotate the start cell to the direction of the end cell
     transform: `rotate(${
@@ -31,9 +46,22 @@ export default function Grid({
     }deg)`,
   };
 
+  // Undo functionality
+  useEffect(() => {
+    const handleUndo = (e) => {
+      if (e.ctrlKey && e.key === "z") {
+        dispatch(gridActions.undo());
+      }
+    };
+    window.addEventListener("keydown", handleUndo);
+    return () => window.removeEventListener("keydown", handleUndo);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [undoStack]);
+
+  /// window listeners
   useEffect(() => {
     const handleResize = () => {
-      setShowLoader(true);
+      dispatch(gridActions.showLoader(true));
       const innerWidth = window.innerWidth - 150;
       const innerHeight = window.innerHeight - 150;
       setWindowSize({ width: innerWidth, height: innerHeight });
@@ -55,134 +83,58 @@ export default function Grid({
       window.removeEventListener("mousedown", handleOnMouseDown);
       window.removeEventListener("blur", handleOnMouseup);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  /// anmiation loop
   useEffect(() => {
-    const rebuildGrid = () => {
-      if (!windowSize.width || !windowSize.height) return;
-      const cellSizeNum = parseInt(cellSize);
-      const width = Math.floor(windowSize.width / (cellSizeNum + 2));
-      const height = Math.floor(windowSize.height / (cellSizeNum + 2));
-
-      let newGrid;
-      if (grid) {
-        newGrid = grid.map((row) => {
-          let newRow = [...row];
-          while (newRow.length > width) {
-            newRow.pop();
-          }
-          while (newRow.length < width) {
-            newRow.push({ ...cell });
-          }
-          return newRow;
-        });
-        while (newGrid.length > height) {
-          newGrid.pop();
-        }
-        while (newGrid.length < height) {
-          newGrid.push(Array.from(Array(width), () => ({ ...cell })));
-        }
-      } else {
-        newGrid = Array.from(Array(height), () =>
-          Array.from(Array(width), () => ({
-            ...cell,
-          }))
-        );
-      }
-
-      handleRebuildGrid(newGrid);
-      setShowLoader(false);
+    const ref = setTimeout(
+      () => dispatch(gridActions.checkChangesQueue()),
+      Math.floor(100 / speed)
+    );
+    return () => {
+      clearTimeout(ref);
     };
-    rebuildGrid();
-  }, [cellSize, windowSize]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [speed, changesQueue, visualizerState]);
 
-  const handleUpdateCell = (row, col, isCliked = isMouseDown) => {
-    if (!state || !isCliked || isRunning) return;
-    handleClearPath();
-    const newGrid = produce((draftGrid) => {
-      if (state === "wall") {
-        if (startCell.row === row && startCell.col === col) return;
-        if (endCell.row === row && endCell.col === col) return;
-        if (draftGrid[row][col].color === "wall") return;
-        handlePushToUndoStack({
-          row: row,
-          col: col,
-          cell: { ...draftGrid[row][col] },
-        });
-        draftGrid[row][col].isBonus = false;
-        draftGrid[row][col].color = "wall";
-      } else if (state === "empty") {
-        if (
-          !draftGrid[row][col].isBonus &&
-          draftGrid[row][col].color === "empty"
-        )
-          return;
-        handlePushToUndoStack({
-          row: row,
-          col: col,
-          cell: { ...draftGrid[row][col] },
-        });
-        draftGrid[row][col].isBonus = false;
-        draftGrid[row][col].color = "empty";
-      } else if (state === "bonus") {
-        if (startCell.row === row && startCell.col === col) return;
-        if (endCell.row === row && endCell.col === col) return;
-        if (
-          draftGrid[row][col].isBonus &&
-          draftGrid[row][col].color === "empty"
-        )
-          return;
-        handlePushToUndoStack({
-          row: row,
-          col: col,
-          cell: { ...draftGrid[row][col] },
-        });
-        draftGrid[row][col].isBonus = true;
-        draftGrid[row][col].color = "empty";
-      } else if (state === "start") {
-        if (endCell.row === row && endCell.col === col) return;
-        draftGrid[row][col].isBonus = false;
-        draftGrid[row][col].color = "empty";
-        setStartCell({ row, col });
-      } else if (state === "end") {
-        if (startCell.row === row && startCell.col === col) return;
-        draftGrid[row][col].isBonus = false;
-        draftGrid[row][col].color = "empty";
-        setEndCell({ row, col });
-      }
-    });
-    setGrid(newGrid);
-  };
-
+  useEffect(() => {
+    if (showLoader) {
+      dispatch(gridActions.resizingScreen(windowSize));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cellSize, windowSize, showLoader]);
   return (
-    <div
-      className={styles.gridContainer}
-      style={{
-        cursor: isRunning ? "not-allowed" : "auto",
-      }}
-    >
+    <div className={`${classes.gridContainer}`}>
       <div
-        style={{ width: windowSize.width, height: windowSize.height }}
-        className={styles.grid}
+        className={`${classes.grid}`}
+        style={{
+          width: windowSize.width,
+          height: windowSize.height,
+          cursor: isRunning ? "not-allowed" : "auto",
+        }}
       >
         {showLoader || !grid ? (
           <Loader />
         ) : (
           grid.map((row, i) => (
-            <div key={i} className={styles.row}>
-              {row.map((cell, j) => (
-                <Cell
-                  key={j}
-                  cell={cell}
-                  row={i}
-                  col={j}
-                  handleUpdateCell={handleUpdateCell}
-                  cellSize={cellSize}
-                  isStartCell={i === startCell.row && j === startCell.col}
-                  isEndCell={i === endCell.row && j === endCell.col}
-                  startStyles={startStyles}
-                />
-              ))}
+            <div key={i} className={`${classes.row}`}>
+              {row.map((cell, j) => {
+                const isStartCell = i === startCell.row && j === startCell.col;
+                const isEndCell = i === endCell.row && j === endCell.col;
+                return (
+                  <Cell
+                    key={`${i}-${j}`}
+                    cell={cell}
+                    row={i}
+                    col={j}
+                    isStartCell={isStartCell}
+                    isEndCell={isEndCell}
+                    styles={isStartCell ? startStyles : {}}
+                    isMouseDown={isMouseDown}
+                  />
+                );
+              })}
             </div>
           ))
         )}
@@ -190,3 +142,4 @@ export default function Grid({
     </div>
   );
 }
+export default Grid;

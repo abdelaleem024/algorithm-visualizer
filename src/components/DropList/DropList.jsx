@@ -1,13 +1,12 @@
 import { useState } from "react";
-import styles from "./DropList.module.css";
+import classes from "./DropList.module.css";
 import dropistIcon from "../../assets/icons/drop-list-arraow.svg";
 import PropsTypes from "prop-types";
+import log from "../../utils/log";
 
-export default function DropList({
-  title = "",
-  list = [],
-  onSelected = () => {},
-}) {
+function DropList({ title = "", list = [], onSelecte = () => {} }) {
+  log("<DropList/ > rendering");
+
   const [isListOpen, setIsListOpen] = useState(false);
 
   const toggleList = () => {
@@ -16,22 +15,22 @@ export default function DropList({
 
   return (
     <div
-      className={styles.dropList}
+      className={`${classes.dropList}`}
       onMouseEnter={toggleList}
       onMouseLeave={toggleList}
     >
-      <div className={styles.titleContainer}>
+      <div className={`${classes.titleContainer}`}>
         <span>{title}</span>
         <img src={dropistIcon} alt="drop list icon" />
       </div>
       {isListOpen && list && (
-        <div className={styles.listContainer}>
+        <div className={`${classes.listContainer}`}>
           {list.map((item, index) => (
             <div
               key={index}
-              className={styles.listItem}
+              className={`${classes.listItem}`}
               onClick={() => {
-                onSelected(item);
+                onSelecte(item);
                 setIsListOpen(false);
               }}
             >
@@ -48,3 +47,5 @@ DropList.PropsTypes = {
   title: PropsTypes.string.isRequired,
   list: PropsTypes.array.isRequired,
 };
+
+export default DropList;
