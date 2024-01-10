@@ -28,6 +28,7 @@ const Cell = memo(function Cell({
       dispatch(gridActions.updateCell({ row, col }));
     }
   };
+  const userOnboardingID = `cell-${row}-${col}`;
 
   return (
     <div
@@ -39,6 +40,7 @@ const Cell = memo(function Cell({
       }}
       onMouseEnter={() => handleUpdateCell(false)}
       onClick={() => handleUpdateCell(true)}
+      id={userOnboardingID}
     >
       {isStartCell && (
         <img

@@ -14,14 +14,14 @@
 }
 
 .selected {
-  border-bottom: 1px solid var(--primary-blue, #1d3557);
-  border-top: 1px solid var(--primary-blue, #1d3557);
-  border-radius: 3px;
+  border-bottom: 2px solid var(--primary-blue, #1d3557);
+  border-top: 2px solid var(--primary-blue, #1d3557);
+  border-radius: 6px;
 }
 
 .container:hover {
-  border-bottom: 1px solid var(--primary-blue, #1d3557);
-  border-top: 1px solid var(--primary-blue, #1d3557);
-  border-radius: 3px;
+  border-bottom: 2px solid var(--primary-blue, #1d3557);
+  border-top: 2px solid var(--primary-blue, #1d3557);
+  border-radius: 6px;
   opacity: 0.8;
 }

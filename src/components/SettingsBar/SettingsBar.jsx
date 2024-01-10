@@ -1,3 +1,4 @@
+import { useState } from "react";
 import classes from "./SettingsBar.module.css";
 import CellLabdel from "./CellLabdel";
 import startCellIcon from "../../assets/icons/start-icon-settings.svg";
@@ -19,6 +20,15 @@ import {
   selectSelectedAlgorithm,
 } from "../../redux/selectors";
 import log from "../../utils/log";
+import { Steps } from "intro.js-react";
+
+const step = [
+  {
+    element: "#algo-drop-list-container",
+    intro: "Select which algorithm you want to visualize",
+    position: "left",
+  },
+];
 
 function SettingsBar() {
   log("<SettingsBar/ > rendering");
@@ -53,10 +63,11 @@ function SettingsBar() {
   const handleSkip = () => {
     dispatch(gridActions.skipChangesQueue());
   };
+  const [showSelectAlgoStep, setShowSelectAlgoStep] = useState(false);
 
   const handleStartVisualization = () => {
     if (selectedAlgorithm === null) {
-      // TODO: show message that no algorithm is selected
+      setShowSelectAlgoStep(true);
       return;
     }
     dispatch(gridActions.startVisualizer());
@@ -78,13 +89,22 @@ function SettingsBar() {
     }
   };
 
+  const userOnboardingIDSpeed = "speed-slider";
+
   return (
     <div className={`${classes.settingsBar}`}>
       <div className={`${classes.IconsContainer}`}>
+        <Steps
+          enabled={showSelectAlgoStep && selectedAlgorithm === null}
+          steps={step}
+          initialStep={0}
+          onExit={() => setShowSelectAlgoStep(false)}
+        />
         <CellLabdel
           label="Start Cell"
           isSelected={selectedCellType === "start"}
           onClick={() => handleChangeSelectedCellType("start")}
+          userOnboardingID="start-cell"
         >
           <img
             src={startCellIcon}
@@ -96,6 +116,7 @@ function SettingsBar() {
           label="End Cell"
           isSelected={selectedCellType === "end"}
           onClick={() => handleChangeSelectedCellType("end")}
+          userOnboardingID="end-cell"
         >
           <img
             src={endCellIcon}
@@ -114,6 +135,7 @@ function SettingsBar() {
           label="Wall Cell"
           isSelected={selectedCellType === "wall"}
           onClick={() => handleChangeSelectedCellType("wall")}
+          userOnboardingID="wall-cell"
         >
           <div className={`${classes.wallCell}`}></div>
         </CellLabdel>
@@ -144,7 +166,10 @@ function SettingsBar() {
             }}
           />
         </div>
-        <div className={`${classes.sliderContainer}`}>
+        <div
+          className={`${classes.sliderContainer}`}
+          id={userOnboardingIDSpeed}
+        >
           <label htmlFor="speed" className={`${classes.label}`}>
             Speed : {speed}
           </label>
@@ -178,13 +203,7 @@ function SettingsBar() {
                 </Button>
               </>
             ) : (
-              <Button
-                label={"Start"}
-                onClick={handleStartVisualization}
-                style={{
-                  cursor: selectedAlgorithm ? "pointer" : "not-allowed",
-                }}
-              >
+              <Button label={"Start"} onClick={handleStartVisualization}>
                 <img src={pauseIcon} alt="Start" />
               </Button>
             )}

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import classes from "./Grid.module.css";
 import Cell from "./Cell";
 import Loader from "../Loader/Loader";
@@ -17,6 +17,7 @@ import {
   selectChangesQueue,
 } from "../../redux/selectors.js";
 import log from "../../utils/log.js";
+import { set } from "lodash";
 
 function Grid() {
   log("<Grid /> rendering");
@@ -57,18 +58,28 @@ function Grid() {
     return () => window.removeEventListener("keydown", handleUndo);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [undoStack]);
+  const ref = useRef(null);
 
   /// window listeners
   useEffect(() => {
     const handleResize = () => {
+      const innerWidth = window.innerWidth - 30;
+      const innerHeight = window.innerHeight - 30;
+
+      if (
+        windowSize.width > 0 &&
+        Math.abs(innerWidth - windowSize.width) < cellSize
+      ) {
+        console.log("it's repsonsive bro, stop resizing");
+        return;
+      }
       dispatch(gridActions.showLoader(true));
-      const innerWidth = window.innerWidth - 150;
-      const innerHeight = window.innerHeight - 150;
       setWindowSize({ width: innerWidth, height: innerHeight });
     };
 
     const handleOnMouseup = () => setIsMouseDown(false);
-    const handleOnMouseDown = () => setIsMouseDown(true);
+    const handleOnMouseDown = (e) =>
+      setIsMouseDown(ref.current && ref.current.contains(e.target));
 
     handleResize();
 
@@ -84,7 +95,7 @@ function Grid() {
       window.removeEventListener("blur", handleOnMouseup);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [windowSize, showLoader]);
 
   /// anmiation loop
   useEffect(() => {
@@ -104,6 +115,9 @@ function Grid() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cellSize, windowSize, showLoader]);
+
+  const UserOnboardingID = "grid";
+
   return (
     <div className={`${classes.gridContainer}`}>
       <div
@@ -113,6 +127,8 @@ function Grid() {
           height: windowSize.height,
           cursor: isRunning ? "not-allowed" : "auto",
         }}
+        ref={ref}
+        id={UserOnboardingID}
       >
         {showLoader || !grid ? (
           <Loader />

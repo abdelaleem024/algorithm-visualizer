@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { visualizerStateMap } from "../constants/constants";
 import randomMaze from "../alogrthims/generateMaze";
-import { algorithmsMap } from "../constants/constants";
+import { algorithmsMap, algorithms } from "../constants/constants";
+
 import { CELL, GRID_SIZE } from "../constants/constants";
 
 const initialState = {
@@ -15,7 +16,7 @@ const initialState = {
   speed: 3,
   cellSize: 40,
   selectedCellType: "wall",
-  selectedAlgorithm: null,
+  selectedAlgorithm: algorithms[0],
 };
 
 const reducers = {
@@ -112,7 +113,7 @@ const reducers = {
         }
       });
     });
-    const { changes } = algorithmsMap[state.selectedAlgorithm](
+    const { changes, found } = algorithmsMap[state.selectedAlgorithm](
       state.grid,
       state.startCell,
       state.endCell
@@ -166,12 +167,14 @@ const reducers = {
       }
       state.endCell = { row, col };
     }
-    state.undoStack.push({ row, col, cell: state.grid[row][col] });
+    state.undoStack = [
+      ...state.undoStack,
+      { row, col, cell: state.grid[row][col] },
+    ];
   },
   resizingScreen(state, action) {
     const { width, height } = action.payload;
     if (!width || !height) {
-      console.assert("width and height are required");
       return;
     }
     const { cellSize, startCell, endCell } = state;
@@ -225,8 +228,20 @@ const reducers = {
     }
     newGrid[newEndCell.row][newEndCell.col].color = "empty";
     newGrid[newStartCell.row][newStartCell.col].color = "empty";
+
+    newGrid.forEach((row) => {
+      row.forEach((cell) => {
+        if (cell.color !== "wall") {
+          cell.color = "empty";
+        }
+      });
+    });
+
     state.undoStack = [];
+    state.visualizerState = visualizerStateMap.idle;
+    state.changesQueue = [];
     state.grid = newGrid;
+
     state.startCell = newStartCell;
     state.endCell = newEndCell;
     state.showLoader = false;

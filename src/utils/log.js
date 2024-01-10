@@ -1,4 +1,7 @@
 function log(message, level = 0, type = "component") {
+  // if (!message.includes("Cell")) {
+  return;
+  // }
   let styling;
   const isItCell = message.includes("Cell");
   if (isItCell) {

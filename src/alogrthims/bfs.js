@@ -73,7 +73,7 @@ const bfs = (grid, startCell, endCell) => {
       parent[newRow][newCol] = [row, col];
     }
   }
-  if (!found) return { changeStack: changesQueue, found: found };
+  if (!found) return { changes: changesQueue, found: found };
   let path = [];
   let current = endCell;
   while (current.row !== -2 && current.col !== -2) {

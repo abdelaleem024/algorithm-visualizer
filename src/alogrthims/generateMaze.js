@@ -38,6 +38,7 @@ const randomMaze = (rows, cols) => {
   };
 };
 
+/// TODO:: check this
 const getStartAndEnd = (rows, cols, changesSet) => {
   const visited = new Set();
   let farthestCell1 = null;
