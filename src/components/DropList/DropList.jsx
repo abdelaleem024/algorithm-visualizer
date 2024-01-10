@@ -4,12 +4,7 @@ import dropistIcon from "../../assets/icons/drop-list-arraow.svg";
 import PropsTypes from "prop-types";
 import log from "../../utils/log";
 
-function DropList({
-  title = "",
-  list = [],
-  onSelecte = () => {},
-  userOnboardingID = "",
-}) {
+function DropList({ title = "", list = [], onSelecte = () => {} }) {
   log("<DropList/ > rendering");
 
   const [isListOpen, setIsListOpen] = useState(false);
@@ -52,10 +47,6 @@ function DropList({
           </div>
         )}
       </div>
-      {/* <div
-        id={userOnboardingID}
-        className={`${classes.userOnboardingDiv}`}
-      ></div> */}
     </>
   );
 }

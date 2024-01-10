@@ -17,7 +17,6 @@ import {
   selectChangesQueue,
 } from "../../redux/selectors.js";
 import log from "../../utils/log.js";
-import { set } from "lodash";
 
 function Grid() {
   log("<Grid /> rendering");
@@ -70,7 +69,6 @@ function Grid() {
         windowSize.width > 0 &&
         Math.abs(innerWidth - windowSize.width) < cellSize
       ) {
-        console.log("it's repsonsive bro, stop resizing");
         return;
       }
       dispatch(gridActions.showLoader(true));

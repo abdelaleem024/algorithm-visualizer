@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import classes from "./Header.module.css";
 import DropList from "../DropList/DropList";
 import infoIcon from "../../assets/icons/info.svg";
@@ -14,6 +14,16 @@ function Header() {
   const dispatch = useDispatch();
 
   const selectedAlgorithm = useSelector(selectSelectedAlgorithm);
+  const [stepsEnabled, setStepsEnabled] = useState(false);
+
+  useEffect(() => {
+    const ref = setTimeout(() => {
+      setStepsEnabled(true);
+    }, 1000);
+    return () => {
+      clearTimeout(ref);
+    };
+  }, []);
 
   const dropListTitle = selectedAlgorithm
     ? selectedAlgorithm
@@ -30,10 +40,6 @@ function Header() {
   const handleGenerateMaze = () => {
     dispatch(gridActions.generateRandomMaze());
   };
-
-  const userOnboardingID = "algo-drop-list";
-
-  const [stepsEnabled, setStepsEnabled] = useState(false);
 
   return (
     <div className={`${classes.header}`}>
@@ -54,7 +60,6 @@ function Header() {
           title={dropListTitle}
           list={algorithms}
           onSelecte={handleChangeAlgorithm}
-          userOnboardingID={userOnboardingID}
         />
         <div className={`${classes.tutorialContainer}`}>
           <div

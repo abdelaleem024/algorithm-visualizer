@@ -50,7 +50,7 @@ const steps = [
   },
   {
     title: "Start Visualization",
-    element: "#start-button",
+    element: "#start-button-onboarding",
     intro: "Let's start the visualization now",
   },
   {
@@ -86,9 +86,7 @@ function UserOnboarding({ stepsEnabled, setStepsEnabled }) {
       const targetStep = document.getElementById(
         steps[currentStep].element.slice(1)
       );
-      if (targetStep && targetStep.contains(e.target)) {
-        console.log("button ", button, "\ntarget ", targetStep);
-        console.log("click");
+      if (targetStep && targetStep.contains(e.target) && button) {
         button.click();
       }
     };
@@ -102,9 +100,9 @@ function UserOnboarding({ stepsEnabled, setStepsEnabled }) {
     return () => {
       window.removeEventListener("mouseup", handleMouseUp);
     };
-  }, [stepsEnabled, currentStep]);
+  }, [stepsEnabled, currentStep, visualizerState, dispatch]);
 
-  const onBeforeChange = async () => {
+  const onBeforeChange = () => {
     switch (currentStep) {
       case 0: {
         const element = document.getElementById("start-cell");
@@ -122,8 +120,8 @@ function UserOnboarding({ stepsEnabled, setStepsEnabled }) {
         break;
       }
       case 8: {
-        if (visualizerState !== visualizerStateMap.running) {
-          const element = document.getElementById("start-button");
+        const element = document.getElementById("start-button-onboarding");
+        if (element) {
           element.click();
         }
         break;
@@ -148,10 +146,7 @@ function UserOnboarding({ stepsEnabled, setStepsEnabled }) {
       steps={steps}
       onExit={handleExit}
       initialStep={0}
-      onAfterChange={(newStepIndex) => {
-        console.log("new step ", newStepIndex);
-        setCurrentStep(newStepIndex);
-      }}
+      onAfterChange={(newStepIndex) => setCurrentStep(newStepIndex)}
       onBeforeChange={onBeforeChange}
       options={{
         showBullets: false,
@@ -159,6 +154,7 @@ function UserOnboarding({ stepsEnabled, setStepsEnabled }) {
         keyboardNavigation: false,
         showProgress: true,
         exitOnOverlayClick: false,
+        hidePrev: true,
       }}
     />
   );

@@ -1,9 +1,9 @@
 import classes from "./Button.module.css";
 import log from "./../../utils/log";
 
-function Button({ label, onClick, children, style }) {
+function Button({ label, onClick, children, style, id }) {
   log(`<Button/ > ${label} rendering`);
-  const userOnboardingID = `${label.toLowerCase()}-button`;
+  const userOnboardingID = id ? id : `${label.toLowerCase()}-button`;
   return (
     <div
       className={`${classes.button}`}

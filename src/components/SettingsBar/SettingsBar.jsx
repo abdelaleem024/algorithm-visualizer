@@ -1,4 +1,3 @@
-import { useState } from "react";
 import classes from "./SettingsBar.module.css";
 import CellLabdel from "./CellLabdel";
 import startCellIcon from "../../assets/icons/start-icon-settings.svg";
@@ -17,18 +16,8 @@ import {
   selectVisualizerState,
   selectSpeed,
   selectCellSize,
-  selectSelectedAlgorithm,
 } from "../../redux/selectors";
 import log from "../../utils/log";
-import { Steps } from "intro.js-react";
-
-const step = [
-  {
-    element: "#algo-drop-list-container",
-    intro: "Select which algorithm you want to visualize",
-    position: "left",
-  },
-];
 
 function SettingsBar() {
   log("<SettingsBar/ > rendering");
@@ -39,7 +28,6 @@ function SettingsBar() {
   const speed = useSelector(selectSpeed);
   const visualizerState = useSelector(selectVisualizerState);
   const selectedCellType = useSelector(selectSelectedCellType);
-  const selectedAlgorithm = useSelector(selectSelectedAlgorithm);
 
   const isPaused = visualizerState === visualizerStateMap.paused;
   const isRunning = visualizerState === visualizerStateMap.running;
@@ -63,13 +51,8 @@ function SettingsBar() {
   const handleSkip = () => {
     dispatch(gridActions.skipChangesQueue());
   };
-  const [showSelectAlgoStep, setShowSelectAlgoStep] = useState(false);
 
   const handleStartVisualization = () => {
-    if (selectedAlgorithm === null) {
-      setShowSelectAlgoStep(true);
-      return;
-    }
     dispatch(gridActions.startVisualizer());
   };
 
@@ -89,17 +72,9 @@ function SettingsBar() {
     }
   };
 
-  const userOnboardingIDSpeed = "speed-slider";
-
   return (
     <div className={`${classes.settingsBar}`}>
       <div className={`${classes.IconsContainer}`}>
-        <Steps
-          enabled={showSelectAlgoStep && selectedAlgorithm === null}
-          steps={step}
-          initialStep={0}
-          onExit={() => setShowSelectAlgoStep(false)}
-        />
         <CellLabdel
           label="Start Cell"
           isSelected={selectedCellType === "start"}
@@ -166,10 +141,7 @@ function SettingsBar() {
             }}
           />
         </div>
-        <div
-          className={`${classes.sliderContainer}`}
-          id={userOnboardingIDSpeed}
-        >
+        <div className={`${classes.sliderContainer}`} id={"speed-slider"}>
           <label htmlFor="speed" className={`${classes.label}`}>
             Speed : {speed}
           </label>
@@ -203,7 +175,11 @@ function SettingsBar() {
                 </Button>
               </>
             ) : (
-              <Button label={"Start"} onClick={handleStartVisualization}>
+              <Button
+                label={"Start"}
+                onClick={handleStartVisualization}
+                id="start-button-onboarding"
+              >
                 <img src={pauseIcon} alt="Start" />
               </Button>
             )}
