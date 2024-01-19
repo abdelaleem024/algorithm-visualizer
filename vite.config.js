@@ -7,5 +7,5 @@ export default defineConfig({
   server: {
     host: true,
   },
-  base: "http://yousfahmed.github.io/algorithm-visualizer",
+  base: "http://yousfahmed.github.io/algorithm-visualizer/",
 });
