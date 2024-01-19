@@ -13,17 +13,6 @@ const router = createBrowserRouter([
     path: "/algorithm-visualizer",
     element: <App />,
     errorElement: <ErrorPage />,
-    children: [
-      {
-        errorElement: <ErrorPage />,
-        children: [
-          {
-            path: "/algorithm-visualizer",
-            element: <App />,
-          },
-        ],
-      },
-    ],
   },
 ]);
 
