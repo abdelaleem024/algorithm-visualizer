@@ -42,7 +42,14 @@ const reducers = {
     const updates = state.changesQueue.slice(0, speed);
     updates.forEach((update) => {
       const { row, col, color } = update;
-      state.grid[row][col].color = color;
+      if (
+        row >= 0 &&
+        row < state.grid.length &&
+        col >= 0 &&
+        col < state.grid[0].length
+      ) {
+        state.grid[row][col].color = color;
+      }
     });
     state.changesQueue = state.changesQueue.slice(speed);
   },
@@ -105,7 +112,7 @@ const reducers = {
     if (state.selectedAlgorithm === null) {
       return;
     }
-    /// clear the existing path to start a new one
+        /// clear the existing path to start a new one
     state.grid.forEach((row) => {
       row.forEach((cell) => {
         if (cell.color !== "wall") {
