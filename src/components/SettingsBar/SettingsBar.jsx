@@ -178,7 +178,7 @@ function SettingsBar() {
               <Button
                 label={"Start"}
                 onClick={handleStartVisualization}
-                id="start-button-onboarding"
+                id="start-visulization-button"
               >
                 <img src={pauseIcon} alt="Start" />
               </Button>

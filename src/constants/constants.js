@@ -10,11 +10,6 @@ const CELL_STYLE = {
   empty: null,
 };
 
-const Mousetracker = {
-  max: 50,
-  min: 10,
-};
-
 const CellSize = {
   MAX: 50,
   MIN: 30,
@@ -58,7 +53,6 @@ const GRID_SIZE = {
 
 export { CELL };
 export { CELL_STYLE };
-export { Mousetracker };
 export { CellSize };
 export { visualizerStateMap };
 export { algorithms };

@@ -30,7 +30,7 @@ function Header() {
     : "Select Algorithm";
 
   const handleChangeAlgorithm = (algorithm) => {
-    dispatch(
+        dispatch(
       gridActions.updateSelectedAlgorithm({
         algorithm: algorithm,
       })
@@ -60,6 +60,7 @@ function Header() {
           title={dropListTitle}
           list={algorithms}
           onSelecte={handleChangeAlgorithm}
+          id="algo-drop-list-container"
         />
         <div className={`${classes.tutorialContainer}`}>
           <div
