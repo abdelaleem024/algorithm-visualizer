@@ -10,7 +10,7 @@ import ErrorPage from "./pages/ErrorPage/ErrorPage.jsx";
 
 const router = createBrowserRouter([
   {
-    path: "/algorithm-visualizer",
+    path: "/",
     element: <App />,
     errorElement: <ErrorPage />,
   },
