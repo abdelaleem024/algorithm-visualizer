@@ -4,7 +4,7 @@ export default function ErrorPage() {
   return (
     <div className={`${classes.container}`}>
       <div className={`${classes.notfound}`}>
-        <div className={`${classes["notfound - 404"]}`}></div>
+        <div className={`${classes["notfound-404"]}`}></div>
         <h1>404</h1>
         <h2>Oops! Page Not Be Found</h2>
         <p>
