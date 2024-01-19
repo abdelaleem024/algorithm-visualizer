@@ -6,11 +6,13 @@ import "./index.css";
 import { Provider } from "react-redux";
 import store from "./redux/index.js";
 import "intro.js/introjs.css";
+import ErrorPage from "./pages/ErrorPage/ErrorPage.jsx";
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/algorithm-visualizer",
     element: <App />,
+    errorElement: <ErrorPage />,
   },
 ]);
 
