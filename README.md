@@ -1,8 +1,53 @@
-# React + Vite
+# Algorithm Visualizer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+[![GitHub Pages Deployment](https://img.shields.io/github/deployments/yousfahmed/algorithm-visualizer/github-pages)](https://yousfahmed.github.io/algorithm-visualizer/)
 
-Currently, two official plugins are available:
+Algorithm Visualizer is a web application that demonstrates how various pathfinding algorithms work. This visualizer currently supports three algorithms: Breadth-First Search (BFS), A\*, and Bi-directional Search. Additionally, it features a maze generator that creates random mazes for the algorithms to solve.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Demo
+
+Check out the live version of the project [here](https://yousfahmed.github.io/algorithm-visualizer/).
+
+## Features
+
+- **Pathfinding Algorithms**:
+  - Breadth-First Search (BFS)
+  - A\* Search
+  - Bi-directional Search
+- **Maze Generation**:
+  - Random Maze Generator
+
+## Installation
+
+To run this project locally, follow these steps:
+
+1. Clone the repository:
+
+   ```sh
+   git clone https://github.com/yousfahmed/algorithm-visualizer.git
+   ```
+
+2. Navigate to the project directory:
+
+   ```sh
+   cd algorithm-visualizer
+   ```
+
+3. Install the dependencies:
+   ```sh
+   npm install
+   ```
+
+## Usage
+
+To start the development server:
+
+```sh
+npm run dev
+```
+
+Open your browser and navigate to `http://localhost:3000` to see the application in action.
+
+## Dependencies
+
+This project is built with [React](https://reactjs.org/) and [Vite](https://vitejs.dev/). Ensure you have Node.js installed to manage the dependencies.
