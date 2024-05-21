@@ -1,6 +1,6 @@
 {
   "name": "pathfinding-visualizer",
-  "homepage": "http://yousfahmed.github.io/algorithm-visualizer",
+  "homepage": "https://yousfahmed.github.io/algorithm-visualizer/",
   "private": false,
   "version": "0.0.0",
   "type": "module",
