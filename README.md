@@ -8,6 +8,10 @@ Algorithm Visualizer is a web application that demonstrates how various pathfind
 
 Check out the live version of the project [here](https://yousfahmed.github.io/algorithm-visualizer/).
 
+<div style="text-align:center">
+  <img src="src/assets/gif/algorithm-visualizer-demo.gif" alt="Algorithm Visualizer Demo">
+</div>
+
 ## Features
 
 - **Pathfinding Algorithms**:
